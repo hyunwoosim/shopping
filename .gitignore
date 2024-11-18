@@ -1,4 +1,5 @@
 HELP.md
+# application.properties 파일 무시
 application.properties
 .gradle
 build/
