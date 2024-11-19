@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="/main.css" rel="stylesheet">
+</head>
+<body>
+
+    <table border="1">
+      <thead>
+      <tr>
+      <td>ID</td>
+      <td>제목</td>
+      <td>날짜</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr  th:each="n : ${notice}">
+        <td th:text="${n.id}">아이디</td>
+        <td th:text="${n.title}">제목</td>
+        <td th:text="${n.date}">날짜</td>
+      </tr>
+      </tbody>
+
+    </table>
+
+
+</body>
+</html>

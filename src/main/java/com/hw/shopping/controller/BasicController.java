@@ -1,7 +1,6 @@
-package com.hw.shopping;
+package com.hw.shopping.controller;
 
 import java.time.ZonedDateTime;
-import java.util.Date;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;

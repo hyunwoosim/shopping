@@ -14,5 +14,12 @@ public class Item {
     public String title;
     public int price;
 
-
+    @Override
+    public String toString() {
+        return "Item{" +
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", price=" + price +
+            '}';
+    }
 }

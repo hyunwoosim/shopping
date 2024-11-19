@@ -1,4 +1,4 @@
-package com.hw.shopping;
+package com.hw.shopping.controller;
 
 import com.hw.shopping.domain.Item;
 import com.hw.shopping.repository.ItemRepository;
@@ -17,7 +17,11 @@ public class ItemController {
     @GetMapping("/list")
     String list(Model model) {
         List<Item> result = itemRepository.findAll();
-        model.addAttribute("name","가나다");
-        return "list.html";
+        model.addAttribute("items",result);
+
+        return "item/list.html";
     }
+
+
+
 }
