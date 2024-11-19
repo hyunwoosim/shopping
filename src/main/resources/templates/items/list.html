@@ -22,7 +22,7 @@
     <h4>
     <a th:text="${item.title}" th:href="@{/detail/{id}(id=${item.id})}">바지</a>
     </h4>
-    <p th:text="${item.price}">45000원</p>
+    <p th:text="${item.price + '원'}">45000원</p>
   </div>
   </div>
 
