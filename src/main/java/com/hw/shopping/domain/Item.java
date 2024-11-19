@@ -22,4 +22,9 @@ public class Item {
         this.price = price;
     }
 
+    public void updateItem(String title, int price) {
+        this.title = title;
+        this.price = price;
+    }
+
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class ItemController {
     @GetMapping("/list")
     String list(Model model) {
         List<Item> result = itemService.allItem();
-        model.addAttribute("items",result);
+        model.addAttribute("items", result);
 
         return "items/list.html";
     }
@@ -46,16 +47,34 @@ public class ItemController {
     @GetMapping("/detail/{item_id}")
     String detail(@PathVariable Long item_id, Model model) {
 
-        Optional<Item> result = itemService.findId(item_id);
-        if(result.isPresent()){
+        Optional<Item> result = itemService.detail(item_id);
+        if (result.isPresent()) {
             model.addAttribute("items", result.get());
             return "items/detail.html";
-        }else {
+        } else {
             return "redirect:/list";
         }
 
     }
 
+    @GetMapping("/edit/{item_id}")
+    String edit(@PathVariable Long item_id, Model model) {
+        Optional<Item> result = itemService.detail(item_id);
+        if (result.isPresent()) {
+            model.addAttribute("item", result.get());
+            return "items/edit.html";
+        } else {
+            return "redirect:/list";
+        }
+    }
 
+    @PostMapping("/update/{item_id}")
+    String update(@PathVariable Long item_id,
+        @RequestParam String title,
+        @RequestParam int price) {
+        itemService.update(item_id, title, price);
+
+        return "redirect:/list";
+    }
 
 }

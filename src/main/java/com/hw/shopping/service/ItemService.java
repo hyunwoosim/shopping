@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +25,16 @@ public class ItemService {
         itemRepository.save(item);
     }
 
-    public Optional<Item> findId(Long item_id) {
+    public Optional<Item> detail(Long item_id) {
         return itemRepository.findById(item_id);
 
+    }
+
+    @Transactional
+    public void update(Long item_Id, String title, int price) {
+        Item item = itemRepository.findById(item_Id)
+            .orElseThrow(() -> new RuntimeException("Item not found"));
+
+        item.updateItem(title,price);
     }
 }

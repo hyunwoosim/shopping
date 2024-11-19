@@ -13,12 +13,19 @@
 
 <div th:replace="~{ fragments/nav.html::navbar }"></div>
 
-<div class="detail">
-  <h4>상세페이지</h4>
+
+<form th:action="@{/update/{item_id}(item_id=${item.id})}" method="post">
+  <h4>수정페이지</h4>
   <img src="https://placehold.co/300">
-  <h4 th:text="${items.title}">금도금 바지</h4>
-  <p th:text="${items.price + '원' }">7억</p>
-</div>
+  <br>
+  <label for="title">Title</label>
+  <input type="text" id="title" name="title" th:value="${item.title}"/>
+
+  <label for="price">Price</label>
+  <input type="number" id="price" name="price" th:value="${item.price}"/>
+
+  <button type="submit">수정</button>
+</form>
 
 </body>
 </html>
