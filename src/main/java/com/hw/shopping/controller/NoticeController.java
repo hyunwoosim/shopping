@@ -2,6 +2,7 @@ package com.hw.shopping.controller;
 
 import com.hw.shopping.domain.notice;
 import com.hw.shopping.repository.NoticeRepository;
+import com.hw.shopping.service.NoticeService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,11 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class NoticeController {
 
-    private final NoticeRepository noticeRepository;
+    private final NoticeService noticeService;
 
     @GetMapping("/notice")
     String list(Model model) {
-        List<notice> result = noticeRepository.findAll();
+        List<notice> result = noticeService.allNotice();
         model.addAttribute("notice", result);
 
         return "notice/noticeList.html";

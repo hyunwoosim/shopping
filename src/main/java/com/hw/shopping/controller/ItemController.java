@@ -19,12 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class ItemController {
 
-    private final ItemRepository itemRepository;
     private final ItemService itemService;
 
     @GetMapping("/list")
     String list(Model model) {
-        List<Item> result = itemRepository.findAll();
+        List<Item> result = itemService.allItem();
         model.addAttribute("items",result);
 
         return "items/list.html";
@@ -47,7 +46,7 @@ public class ItemController {
     @GetMapping("/detail/{item_id}")
     String detail(@PathVariable Long item_id, Model model) {
 
-        Optional<Item> result = itemRepository.findById(item_id);
+        Optional<Item> result = itemService.findId(item_id);
         if(result.isPresent()){
             model.addAttribute("items", result.get());
             return "items/detail.html";
