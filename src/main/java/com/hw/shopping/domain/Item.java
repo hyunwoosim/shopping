@@ -5,21 +5,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class Item {
 
-    @Id @GeneratedValue
-    public Long id;
-    public String title;
-    public int price;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "item_id")
+    private Long id;
+    private String title;
+    private int price;
 
-    @Override
-    public String toString() {
-        return "Item{" +
-            "id=" + id +
-            ", title='" + title + '\'' +
-            ", price=" + price +
-            '}';
+    public void createItem(String title, int price) {
+        this.title = title;
+        this.price = price;
     }
+
 }

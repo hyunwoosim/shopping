@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="/main.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div th:replace="~{ fragments/nav.html::navbar }"></div>
+
+
+  <div class="card" th:each="item : ${items}">
+    <a th:href="@{/detail/{id}(id=${item.id})}">
+    <img src="https://placehold.co/300">
+    </a>
+    <div>
+    <h4>
+    <a th:text="${item.title}" th:href="@{/detail/{id}(id=${item.id})}">바지</a>
+    </h4>
+    <p th:text="${item.price}">45000원</p>
+  </div>
+  </div>
+
+
+</body>
+</html>
