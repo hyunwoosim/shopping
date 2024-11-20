@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -81,5 +82,14 @@ public class ItemController {
         itemService.delete(item_id);
 
         return ResponseEntity.status(200).body("삭제완료");
+    }
+
+    @GetMapping("/test2")
+    String test2() {
+      var result =  new BCryptPasswordEncoder().encode("문자");
+      var result2 =  new BCryptPasswordEncoder().encode("문자2");
+        System.out.println("result = " + result);
+        System.out.println("result = " + result2);
+        return "redirect:/list";
     }
 }
