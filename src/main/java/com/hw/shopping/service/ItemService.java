@@ -37,4 +37,8 @@ public class ItemService {
 
         item.updateItem(title,price);
     }
+
+    public void delete(Long item_id) {
+        itemRepository.deleteById(item_id);
+    }
 }

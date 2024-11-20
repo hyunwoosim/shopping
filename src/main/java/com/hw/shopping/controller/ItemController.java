@@ -1,7 +1,6 @@
 package com.hw.shopping.controller;
 
 import com.hw.shopping.domain.Item;
-import com.hw.shopping.repository.ItemRepository;
 import com.hw.shopping.service.ItemService;
 import java.util.List;
 import java.util.Optional;
@@ -9,9 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -77,4 +75,11 @@ public class ItemController {
         return "redirect:/list";
     }
 
+
+    @DeleteMapping("/delete")
+    ResponseEntity<String> deleteItem(@RequestParam Long item_id) {
+        itemService.delete(item_id);
+
+        return ResponseEntity.status(200).body("삭제완료");
+    }
 }

@@ -26,9 +26,20 @@
       <a th:href="@{/edit/{id}(id=${item.id})}">
       <button >수정</button>
       </a>
+      <button th:onclick="fetch('/delete?item_id=[[${item.id}]]', {method : 'DELETE'})
+            .then(r => r.text())
+            .then(() => {
+              location.reload();
+            })
+
+      ">삭제</button>
     </div>
 
   </div>
+
+
+
+
 
 
 </body>
