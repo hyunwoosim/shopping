@@ -13,7 +13,7 @@
 </span>
 
   <span th:if="${#authorization.expression('isAuthenticated()')}">
-    <a href="/mypage" th:text="${#authentication.name}"></a>
+    <a href="/myPage" th:text="${#authentication.name}"></a>
   </span>
 
   <span th:if="${#authorization.expression('isAuthenticated()')}">

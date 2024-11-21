@@ -1,10 +1,13 @@
 package com.hw.shopping.controller;
 
 import com.hw.shopping.domain.Item;
+import com.hw.shopping.repository.ItemRepository;
 import com.hw.shopping.service.ItemService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -20,13 +23,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ItemController {
 
     private final ItemService itemService;
+    private final ItemRepository itemRepository;
 
     @GetMapping("/list")
     String list(Model model) {
         List<Item> result = itemService.allItem();
         model.addAttribute("items", result);
 
-        return "items/list.html";
+        return "redirect:/list/page/1";
     }
 
     @GetMapping("/write")
@@ -84,12 +88,17 @@ public class ItemController {
         return ResponseEntity.status(200).body("삭제완료");
     }
 
-    @GetMapping("/test2")
-    String test2() {
-      var result =  new BCryptPasswordEncoder().encode("문자");
-      var result2 =  new BCryptPasswordEncoder().encode("문자2");
-        System.out.println("result = " + result);
-        System.out.println("result = " + result2);
-        return "redirect:/list";
+    @GetMapping("/list/page/{num}")
+    String getListPage(Model model, @PathVariable int num) {
+
+       Page<Item> result = itemRepository.findPageBy(PageRequest.of(num - 1, 5));
+        model.addAttribute("items", result.getContent()); // 현재 페이지 아이템 목록
+        model.addAttribute("currentPage", num); // 현재 페이지
+        model.addAttribute("totalPages", result.getTotalPages()); // 전체 페이지 수
+
+        return "items/list";
     }
+
+
+
 }

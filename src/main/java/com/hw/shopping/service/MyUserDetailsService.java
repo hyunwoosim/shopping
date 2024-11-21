@@ -3,6 +3,7 @@ package com.hw.shopping.service;
 import com.hw.shopping.domain.Member;
 import com.hw.shopping.repository.MemberRepository;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +36,29 @@ public class MyUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("일반유저"));
 
+        var a = new CustomUser(member.getUsername(), member.getPassword(), authorities);
+        a.displayName = member.getDisplayName();
 
-        return new User(member.getUsername(), member.getPassword(), authorities);
+        return a;
 
+    }
+
+    public class CustomUser extends  User{
+
+        public String displayName;
+
+        public CustomUser(String username, String password,
+            Collection<? extends GrantedAuthority> authorities) {
+            super(username, password, authorities);
+        }
+
+        public CustomUser(String username, String password, boolean enabled,
+            boolean accountNonExpired,
+            boolean credentialsNonExpired, boolean accountNonLocked,
+            Collection<? extends GrantedAuthority> authorities) {
+            super(username, password, enabled, accountNonExpired, credentialsNonExpired,
+                  accountNonLocked,
+                  authorities);
+        }
     }
 }
