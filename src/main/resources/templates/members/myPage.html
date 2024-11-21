@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="/main.css" rel="stylesheet">
+</head>
+<body>
+
+
+<div th:replace="~{ fragments/nav.html::navbar }"></div>
+
+<h4> 마이 페이지 </h4>
+
+<!-- 특정 권한 가진 사용자만 접근 가능 -->
+<span sec:authorize="hasAuthority('일반유저')">
+  일반 사용자 전용 콘텐츠입니다.
+</span>
+
+<!-- 인증된 사용자만 접근 가능 -->
+<div sec:authorize="isAuthenticated()">
+  로그인한 사용자만 볼 수 있는 콘텐츠입니다.
+</div>
+
+<!-- 사용자 이름 출력 -->
+<span th:text="${#authentication.name}">사용자 이름</span>
+
+</body>
+</html>
