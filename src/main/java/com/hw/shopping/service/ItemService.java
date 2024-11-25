@@ -5,6 +5,8 @@ import com.hw.shopping.repository.ItemRepository;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +20,10 @@ public class ItemService {
        return itemRepository.findAll();
     }
 
-    public void saveItem(String title, int price) {
+    public void saveItem(String title, int price, String imgUrl) {
 
         Item item = new Item();
-        item.createItem(title, price);
+        item.createItem(title, price, imgUrl);
         itemRepository.save(item);
     }
 
@@ -31,14 +33,18 @@ public class ItemService {
     }
 
     @Transactional
-    public void update(Long item_Id, String title, int price) {
+    public void update(Long item_Id, String title, int price, String imgUrl) {
         Item item = itemRepository.findById(item_Id)
             .orElseThrow(() -> new RuntimeException("Item not found"));
 
-        item.updateItem(title,price);
+        item.updateItem(title,price,imgUrl);
     }
 
     public void delete(Long item_id) {
         itemRepository.deleteById(item_id);
+    }
+
+    public Page<Item> listPage(int num){
+        return itemRepository.findPageBy(PageRequest.of(num - 1, 5));
     }
 }

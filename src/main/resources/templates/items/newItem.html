@@ -18,8 +18,40 @@
   <input name="title">
   <h4>price</h4>
   <input name="price">
+  <input type="hidden" name="imgUrl"> <!-- 이미지 URL 저장용 -->
+  <input type="file" onchange="getURL(this)">
+  <img src="https://placehold.co/300">
+
+
   <button type="submit">전송</button>
 </form>
+
+<!--<input type="file" onchange="getURL(this)">-->
+<!--<img src="">-->
+
+<script>
+  async function getURL(e) {
+    let name = encodeURIComponent(e.files[0].name)
+    let result = await fetch('/presigned-url?filename=' + name)
+    result = await result.text()
+
+   let 결과 = await fetch(result, {
+     method : 'PUT',
+     body : e.files[0]
+    })
+
+    console.log(결과)
+    console.log(결과.url.split("?")[0])
+
+  if (결과.ok) {
+  const imageUrl = result.split("?")[0];
+    document.querySelector('img').src = imageUrl
+    document.querySelector('input[name="imgUrl"]').value = imageUrl
+  }
+
+
+  }
+</script>
 
 </body>
 </html>

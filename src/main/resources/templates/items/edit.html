@@ -16,7 +16,12 @@
 
 <form th:action="@{/update/{item_id}(item_id=${item.id})}" method="post">
   <h4>수정페이지</h4>
-  <img src="https://placehold.co/300">
+  <img th:if="${item.imgUrl == null || item.imgUrl.isEmpty()} " src="https://placehold.co/300">
+  <img th:if="${item.imgUrl != null} " th:src="${item.imgUrl}">
+
+  <input type="hidden" name="imgUrl"> <!-- 이미지 URL 저장용 -->
+  <input type="file" onchange="getURL(this)">
+
   <br>
   <label for="title">Title</label>
   <input type="text" id="title" name="title" th:value="${item.title}"/>
@@ -26,6 +31,30 @@
 
   <button type="submit">수정</button>
 </form>
+
+<script>
+  async function getURL(e) {
+    let name = encodeURIComponent(e.files[0].name)
+    let result = await fetch('/presigned-url?filename=' + name)
+    result = await result.text()
+
+   let 결과 = await fetch(result, {
+     method : 'PUT',
+     body : e.files[0]
+    })
+
+    console.log(결과)
+    console.log(결과.url.split("?")[0])
+
+  if (결과.ok) {
+  const imageUrl = result.split("?")[0];
+    document.querySelector('img').src = imageUrl
+    document.querySelector('input[name="imgUrl"]').value = imageUrl
+  }
+
+
+  }
+</script>
 
 </body>
 </html>
