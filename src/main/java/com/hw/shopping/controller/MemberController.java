@@ -1,8 +1,8 @@
 package com.hw.shopping.controller;
 
 import com.hw.shopping.repository.MemberRepository;
+import com.hw.shopping.service.CustomUser;
 import com.hw.shopping.service.MemberService;
-import com.hw.shopping.service.MyUserDetailsService.CustomUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;

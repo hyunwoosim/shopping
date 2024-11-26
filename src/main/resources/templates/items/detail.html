@@ -21,6 +21,44 @@
   <p th:text="${items.price + '원' }">7억</p>
 </div>
 
+<h3>Comments</h3>
+<ul>
+  <li th:each="comment : ${comments}">
+    <p th:text="${comment.username} + ': ' + ${comment.content}"></p>
+  </li>
+</ul>
+
+
+<form action="/comment" method="POST">
+  <input name="content">
+  <input name="parent" th:value="${items.id}" style="display : none">
+  <button type="submit">댓글 등록</button>
+</form>
+
+<!--<div>-->
+<!--  <ul class="pagination">-->
+<!--    &lt;!&ndash; 이전 버튼 &ndash;&gt;-->
+<!--    <li th:classappend="${currentPage == 1} ? 'disabled'">-->
+<!--      <a th:href="@{/detail/{item_id}(item_id=${items.id})}?comment=${currentPage - 1}"-->
+<!--         th:if="${currentPage > 1}">이전</a>-->
+<!--      <span th:if="${currentPage == 1}">이전</span>-->
+<!--    </li>-->
+
+<!--    &lt;!&ndash; 페이지 번호 &ndash;&gt;-->
+<!--    <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}"-->
+<!--        th:classappend="${pageNum == currentPage} ? 'active'">-->
+<!--      <a th:href="@{/detail/{item_id}(item_id=${items.id})}?comment=${pageNum}"-->
+<!--         th:text="${pageNum}"></a>-->
+<!--    </li>-->
+
+<!--    &lt;!&ndash; 다음 버튼 &ndash;&gt;-->
+<!--    <li th:classappend="${currentPage == totalPages} ? 'disabled'">-->
+<!--      <a th:href="@{/detail/{item_id}(item_id=${items.id})}?comment=${currentPage + 1}"-->
+<!--         th:if="${currentPage < totalPages}">다음</a>-->
+<!--      <span th:if="${currentPage == totalPages}">다음</span>-->
+<!--    </li>-->
+<!--  </ul>-->
+<!--</div>-->
 
 </body>
 </html>

@@ -1,7 +1,9 @@
 package com.hw.shopping.controller;
 
+import com.hw.shopping.domain.Comment;
 import com.hw.shopping.domain.Item;
 import com.hw.shopping.repository.ItemRepository;
+import com.hw.shopping.service.CommentService;
 import com.hw.shopping.service.ItemService;
 import com.hw.shopping.service.S3Service;
 import java.util.List;
@@ -26,6 +28,7 @@ public class ItemController {
     private final ItemService itemService;
     private final ItemRepository itemRepository;
     private final S3Service s3Service;
+    private final CommentService commentService;
 
     @GetMapping("/list")
     String list(Model model) {
@@ -53,15 +56,29 @@ public class ItemController {
     }
 
     @GetMapping("/detail/{item_id}")
-    String detail(@PathVariable Long item_id, Model model) {
+    String detail(@PathVariable Long item_id,
+        Model model) {
+
 
         Optional<Item> result = itemService.detail(item_id);
         if (result.isPresent()) {
             model.addAttribute("items", result.get());
+
+            List<Comment> comments = commentService.commentList(item_id);
+            model.addAttribute("comments", comments);
+
+//            Page<Comment> commentPage = commentService.listPage(item_id ,num);
+//            model.addAttribute("commentPage", commentPage.getContent()); // 현재 페이지 아이템 목록
+//            model.addAttribute("currentPage", num); // 현재 페이지
+//            model.addAttribute("totalPages", commentPage.getTotalPages());
+
+
             return "items/detail.html";
         } else {
             return "redirect:/list";
         }
+
+
 
     }
 
