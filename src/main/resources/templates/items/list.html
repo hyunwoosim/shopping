@@ -15,7 +15,8 @@
 
 
   <div class="card" th:each="item : ${items}">
-    <a th:href="@{/detail/{id}(id=${item.id})}">
+<!--    <a th:href="@{/detail/{id}(id=${item.id})}">-->
+    <a th:href="@{'/detail/' + ${item.id} + '?comment=' + ${comment != null ? comment : 1}}">
       <img th:if="${item.imgUrl == null || item.imgUrl.isEmpty()} " src="https://placehold.co/300">
       <img th:if="${item.imgUrl != null} " th:src="${item.imgUrl}">
     </a>

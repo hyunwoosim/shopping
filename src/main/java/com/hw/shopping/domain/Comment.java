@@ -20,6 +20,7 @@ public class Comment {
     private String username;
     @Column(length = 1000)
     private String content;
+    @Column(name = "parent_id")
     private Long parentId;
 
     public void saveComment(String username, String content, Long parentId) {

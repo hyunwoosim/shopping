@@ -57,28 +57,52 @@ public class ItemController {
 
     @GetMapping("/detail/{item_id}")
     String detail(@PathVariable Long item_id,
-        Model model) {
-
+        @RequestParam(defaultValue = "1") int comment,
+        Model model
+         ) {
+        System.out.println("###########Controller#################");
+        System.out.println("Received comment: " + comment);
+        System.out.println("###########Controller#################");
 
         Optional<Item> result = itemService.detail(item_id);
+
+        System.out.println("###########Controller#################");
+        System.out.println("result = " + result);
+        System.out.println("###########Controller#################");
+
         if (result.isPresent()) {
+
+            System.out.println("###########Controller1#################");
+            System.out.println("result = " + result);
+            System.out.println("item_id = " + item_id);
+            System.out.println("###########Controller1#################");
+
             model.addAttribute("items", result.get());
 
-            List<Comment> comments = commentService.commentList(item_id);
-            model.addAttribute("comments", comments);
+//            List<Comment> comments = commentService.commentList(item_id);
+//            model.addAttribute("comments", comments);
 
-//            Page<Comment> commentPage = commentService.listPage(item_id ,num);
-//            model.addAttribute("commentPage", commentPage.getContent()); // 현재 페이지 아이템 목록
-//            model.addAttribute("currentPage", num); // 현재 페이지
-//            model.addAttribute("totalPages", commentPage.getTotalPages());
+            Page<Comment> commentPage = commentService.commetlistPage(item_id, comment);
+
+            System.out.println("###########Controller2#################");
+            System.out.println("item_id = " + item_id);
+            System.out.println("comment = " + comment);
+            System.out.println("현재 페이지: " + comment);
+            System.out.println("총 페이지 수: " + commentPage.getTotalPages());
+            System.out.println("댓글 목록: " + commentPage.getContent());
+            System.out.println("###########Controller2#################");
+
+            model.addAttribute("commentsList", commentPage.getContent()); // 현재 페이지 아이템 목록
+            model.addAttribute("currentPage", comment); // 현재 페이지
+            model.addAttribute("totalPages", commentPage.getTotalPages()); // 전체 페이지 수
+
+
 
 
             return "items/detail.html";
         } else {
             return "redirect:/list";
         }
-
-
 
     }
 
@@ -115,6 +139,7 @@ public class ItemController {
     String getListPage(Model model, @PathVariable int num) {
 
         Page<Item> result = itemService.listPage(num);
+        System.out.println("댓글 목록: " + result.getContent());
         model.addAttribute("items", result.getContent()); // 현재 페이지 아이템 목록
         model.addAttribute("currentPage", num); // 현재 페이지
         model.addAttribute("totalPages", result.getTotalPages()); // 전체 페이지 수

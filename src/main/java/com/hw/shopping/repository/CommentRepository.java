@@ -13,5 +13,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAllByParentId(Long parentId);
 
     // 댓글 페이지 기능
-    Page<Comment> findPageBy(Long ParentId,Pageable page);
+    Page<Comment> findByParentId(Long parentId, Pageable page);
 }
