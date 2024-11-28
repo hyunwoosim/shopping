@@ -13,9 +13,16 @@
 
 <div th:replace="~{ fragments/nav.html::navbar }"></div>
 
+<form action="/search" method="GET">
+  <input name="searchText" style="display : inline">
+
+  <button>검색</button>
+
+</form>
+
+
 
   <div class="card" th:each="item : ${items}">
-<!--    <a th:href="@{/detail/{id}(id=${item.id})}">-->
     <a th:href="@{'/detail/' + ${item.id} + '?comment=' + ${comment != null ? comment : 1}}">
       <img th:if="${item.imgUrl == null || item.imgUrl.isEmpty()} " src="https://placehold.co/300">
       <img th:if="${item.imgUrl != null} " th:src="${item.imgUrl}">
@@ -38,27 +45,45 @@
 
   </div>
 
+
+
+
 <div>
   <ul class="pagination">
     <!-- 이전 버튼 -->
     <li th:classappend="${currentPage == 1} ? 'disabled'">
-      <a th:href="@{/list/page/{num}(num=${currentPage - 1})}" th:if="${currentPage > 1}">이전</a>
+      <a th:if="${searchText != null}"
+         th:href="@{'/search?searchText=' + ${searchText} + '&num=' + (${currentPage - 1})}">이전</a>
+      <a th:if="${searchText == null}"
+         th:href="@{/list/page/{num}(num=${currentPage - 1})}">이전</a>
       <span th:if="${currentPage == 1}">이전</span>
     </li>
 
     <!-- 페이지 번호 -->
     <li th:each="pageNum : ${#numbers.sequence(1, totalPages)}"
         th:classappend="${pageNum == currentPage} ? 'active'">
-      <a th:href="@{/list/page/{num}(num=${pageNum})}" th:text="${pageNum}"></a>
+      <a th:if="${searchText != null}"
+         th:href="@{'/search?searchText=' + ${searchText} + '&num=' + ${pageNum}}"
+         th:text="${pageNum}"></a>
+      <a th:if="${searchText == null}"
+         th:href="@{/list/page/{num}(num=${pageNum})}"
+         th:text="${pageNum}"></a>
     </li>
 
     <!-- 다음 버튼 -->
     <li th:classappend="${currentPage == totalPages} ? 'disabled'">
-      <a th:href="@{/list/page/{num}(num=${currentPage + 1})}" th:if="${currentPage < totalPages}">다음</a>
+      <a th:if="${searchText != null}"
+         th:href="@{'/search?searchText=' + ${searchText} + '&num=' + (${currentPage + 1})}">다음</a>
+      <a th:if="${searchText == null}"
+         th:href="@{/list/page/{num}(num=${currentPage + 1})}">다음</a>
       <span th:if="${currentPage == totalPages}">다음</span>
     </li>
   </ul>
 </div>
+
+
+
+
 
 
 

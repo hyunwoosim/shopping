@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -139,7 +140,7 @@ public class ItemController {
     String getListPage(Model model, @PathVariable int num) {
 
         Page<Item> result = itemService.listPage(num);
-        System.out.println("댓글 목록: " + result.getContent());
+        System.out.println("페이지 목록: " + result.getContent());
         model.addAttribute("items", result.getContent()); // 현재 페이지 아이템 목록
         model.addAttribute("currentPage", num); // 현재 페이지
         model.addAttribute("totalPages", result.getTotalPages()); // 전체 페이지 수
@@ -154,6 +155,34 @@ public class ItemController {
         System.out.println("result = " + result);
         return result;
     }
+
+    @GetMapping("/search")
+    String postSearch(@RequestParam String searchText,
+            @RequestParam(defaultValue = "1") int num
+        , Model model) {
+
+        System.out.println("########Controller#######");
+        System.out.println("searchText = " + searchText);
+        System.out.println("num = " + num);
+        System.out.println("########Controller#######");
+
+
+        Page<Item> search = itemService.search(searchText, num);
+        model.addAttribute("items", search.getContent());
+        model.addAttribute("currentPage", num); // 현재 페이지
+        model.addAttribute("totalPages", search.getTotalPages()); // 전체 페이지 수
+        model.addAttribute("searchText", searchText);
+        System.out.println("########Controller#######");
+        System.out.println("search = " + search);
+        System.out.println("items = " + search.getContent());
+        System.out.println("num = " + num);
+        System.out.println("totalPages = " + search.getTotalPages());
+        System.out.println("searchText = " + searchText);
+        System.out.println("########Controller#######");
+
+    return "items/list";
+    }
+
 
 
 }

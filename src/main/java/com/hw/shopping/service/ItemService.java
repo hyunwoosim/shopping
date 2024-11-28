@@ -47,4 +47,22 @@ public class ItemService {
     public Page<Item> listPage(int num){
         return itemRepository.findPageBy(PageRequest.of(num - 1, 5));
     }
+
+    public Page<Item> search(String searchText, int num) {
+        System.out.println("#################Service");
+        System.out.println("searchText = " + searchText);
+        System.out.println("num = " + num);
+        System.out.println("#################Service");
+
+        PageRequest page = PageRequest.of(num - 1, 5);
+
+        System.out.println("#################Service");
+        System.out.println("searchText = " + searchText);
+        System.out.println("num = " + num);
+        System.out.println("page = " + page);
+        System.out.println("#################Service");
+
+        return itemRepository.rawQuery1(searchText,page);
+    }
+
 }
