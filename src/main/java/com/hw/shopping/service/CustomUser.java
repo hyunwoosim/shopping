@@ -1,11 +1,18 @@
 package com.hw.shopping.service;
 
 import java.util.Collection;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 public class CustomUser extends User {
 
+    // id 반환 메서드 추가
+    // id 설정 메서드 추가
+    @Getter
+    @Setter
+    public Long id;
     public String displayName;
 
     public CustomUser(String username, String password,
@@ -21,4 +28,5 @@ public class CustomUser extends User {
               accountNonLocked,
               authorities);
     }
+
 }

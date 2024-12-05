@@ -22,6 +22,28 @@
 </div>
 
 
+<form action="/order" method="POST">
+
+  <h4>수량</h4>
+  <input type="button" onclick="currentCount('plus')" value="+">
+  <input type="button" onclick="currentCount('minus')" value="-">
+  <div id="currentCount" th:data-price="${items.price}">0</div>
+
+
+  <h4>총 가격</h4>
+  <div id="price">0원</div>
+  <!-- Hidden input for 수량 -->
+  <input type="hidden" id="hiddenCount" name="count" value="0">
+
+  <!-- Hidden input for 총 가격 -->
+  <input type="hidden" id="hiddenTotalPrice" name="totalPrice" value="0">
+  <input id="item_id" name="item_id" th:value="${items.id}" type="hidden">
+
+
+  <button>주문하기</button>
+</form>
+
+
 
 <h3>Comments</h3>
 <ul>
@@ -61,6 +83,45 @@
     </li>
   </ul>
 </div>
+
+
+<script>
+  function currentCount(type)  {
+  // 결과를 표시할 element
+  const countElement = document.getElementById('currentCount');
+  const totalPriceElement = document.getElementById('price');
+
+  const hiddenCount = document.getElementById('hiddenCount');
+  const hiddenTotalPrice = document.getElementById('hiddenTotalPrice');
+
+  // 현재 화면에 표시된 값
+  let number = parseInt(countElement.innerText);
+   const price = parseInt(countElement.dataset.price);
+
+  // 더하기/빼기
+  if(type === 'plus') {
+    number += 1;
+
+  }else if(type === 'minus')  {
+    number -= 1;
+  }
+  // 0 보다 작을 때 0으로 고정
+  if(number < 0) {
+    number = 0;
+  }
+
+   // 총 가격 계산
+    const totalPrice = number * price;
+
+  // 결과 출력
+  countElement.innerText = number;
+  totalPriceElement.innerText = totalPrice + '원';
+
+  hiddenCount.value = number;
+  hiddenTotalPrice.value = totalPrice;
+}
+
+</script>
 
 </body>
 
