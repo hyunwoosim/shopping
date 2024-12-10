@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="/main.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div th:replace="~{ fragments/nav.html::navbar }"></div>
+
+<table>
+  <thred>
+    <tr>
+      <th>주문 번호(order_id)</th>
+      <th>주문자(member.getusernmae)</th>
+      <th>상품명(item.gettitle)</th>
+      <th>가격(item.getPrice)</th>
+      <th>총합가격(item.getPrice)</th>
+      <th>주문 갯수(item.getCount)</th>
+      <th>주문일시(created)</th>
+
+    </tr>
+  </thred>
+  <tbody>
+  <tr th:each="order : ${order}">
+    <td th:text="${order.id}">주문번호</td>
+    <td th:text="${order.member.displayName}">주문자</td>
+    <td th:text="${order.item.title}">상품명</td>
+    <td th:text="${order.item.price}">가격</td>
+    <td th:text="${order.price}">총합가격</td>
+    <td th:text="${order.count}">주문 갯수</td>
+    <td th:text="${order.created}">주문 일시</td>
+  </tr>
+  </tbody>
+
+</table>
+
+
+
+
+</body>
+</html>

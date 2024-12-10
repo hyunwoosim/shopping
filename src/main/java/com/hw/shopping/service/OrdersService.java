@@ -7,6 +7,7 @@ import com.hw.shopping.repository.ItemRepository;
 import com.hw.shopping.repository.MemberRepository;
 import com.hw.shopping.repository.OrdersRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,11 @@ public class OrdersService {
         System.out.println("@@@@@@@@@@Service@@@@@@@@@@");
 
         ordersRepository.save(order);
+    }
+
+    public List<Order> AllList() {
+        List<Order> all = ordersRepository.findAll();
+        return all;
     }
 
 

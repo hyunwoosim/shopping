@@ -12,31 +12,33 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "orders")
 @Getter
+@Setter
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "order_id")
-    Long id;
+   private Long id;
 
 
-    int price;
-    int count;
+    private int price;
+    private int count;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    Member member;
+   private Member member;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "item_id")
-    Item item;
+   private Item item;
 
 
-    LocalDateTime created;
+   private LocalDateTime created;
 
     public void saveOrders(int price, int count, Member member, Item item, LocalDateTime created) {
         this.price = price;

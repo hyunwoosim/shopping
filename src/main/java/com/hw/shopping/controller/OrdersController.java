@@ -1,12 +1,16 @@
 package com.hw.shopping.controller;
 
 import com.hw.shopping.domain.Member;
+import com.hw.shopping.domain.Order;
 import com.hw.shopping.repository.OrdersRepository;
 import com.hw.shopping.service.CustomUser;
 import com.hw.shopping.service.OrdersService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -41,4 +45,26 @@ public class OrdersController {
         return "redirect:/list";
 
     }
+
+    @GetMapping("/order/all")
+    String getOrderAll(Model model) {
+        List<Order> orders = ordersService.AllList();
+
+        model.addAttribute("order", orders);
+
+        System.out.println("#################ORDER##################");
+        System.out.println("orders.get(0).getId() = " + orders.get(0).getId());
+        System.out.println("orders.get(0).getCount() = " + orders.get(0).getCount());
+        System.out.println("orders.get(0).getDisplayName() = " + orders.get(0).getMember().getDisplayName());
+        System.out.println("orders.get(0).getUsername() = " + orders.get(0).getMember().getUsername());
+        System.out.println("orders.get(0).getTitle() = " + orders.get(0).getItem().getTitle());
+        System.out.println("orders.get(0).getPrice() = " + orders.get(0).getPrice());
+
+
+
+        System.out.println("@@@@@@@@@@Controller@@@@@@@@@@");
+        System.out.println("@@@@@@@@@@Controller@@@@@@@@@@");
+        return "orders/list.html";
+    }
+
 }
