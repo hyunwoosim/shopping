@@ -20,6 +20,8 @@ public class CustomUser extends User {
         super(username, password, authorities);
     }
 
+
+
     public CustomUser(String username, String password, boolean enabled,
         boolean accountNonExpired,
         boolean credentialsNonExpired, boolean accountNonLocked,
@@ -27,6 +29,14 @@ public class CustomUser extends User {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired,
               accountNonLocked,
               authorities);
+    }
+
+    public CustomUser(String username, String password,
+        Collection<? extends GrantedAuthority> authorities,
+        Long id, String displayName) {
+        super(username, password, authorities);
+        this.id = id;
+        this.displayName = displayName;
     }
 
 }

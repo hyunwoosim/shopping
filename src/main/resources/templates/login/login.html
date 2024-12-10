@@ -25,6 +25,7 @@
   <button type="submit">전송</button>
 </form>
 
+<h4>Jwt 로그인</h4>
 <form>
   <input name="username" id="username">
   <input name="password" type="password" id="password">
@@ -45,6 +46,15 @@
   }
 </script>
 
+
+<button onclick="getMyPage()"> JWT 마이페이지</button>
+<script>
+  function getMyPage(){
+  fetch('/my-page/jwt')
+    .then((r)=> r.text())
+    .then((r)=> { console.log(r) })
+  }
+</script>
 
 </body>
 </html>

@@ -1,11 +1,14 @@
 package com.hw.shopping.security;
 
+import com.hw.shopping.service.CustomUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.util.Date;
+import java.util.stream.Collectors;
 import javax.crypto.SecretKey;
+import org.springframework.security.core.Authentication;
 
 public class JwtUtil {
 
@@ -14,10 +17,20 @@ public class JwtUtil {
             "jwtpassword123jwtpassword123jwtpassword123jwtpassword123jwtpassword"
         ));
 
-    public static String createToken() {
+    public static String createToken(Authentication auth) {
+
+        CustomUser user = (CustomUser) auth.getPrincipal();
+
+        String collect = auth.getAuthorities()
+            .stream()
+            .map(a -> a.getAuthority())
+            .collect(Collectors.joining(","));
+
         String jwt = Jwts.builder()
-            .claim("username", "어쩌구")
-            .claim("displayName", "저쩌구")
+            .claim("username", user.getUsername())
+            .claim("displayName", user.displayName)
+            //권한
+            .claim("authorities", collect)
             .issuedAt(new Date(System.currentTimeMillis()))
             .expiration(new Date(System.currentTimeMillis() + 10000)) //유효기간 10초
             .signWith(key)

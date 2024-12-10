@@ -1,8 +1,12 @@
 package com.hw.shopping.controller;
 
 import com.hw.shopping.repository.MemberRepository;
+import com.hw.shopping.security.JwtUtil;
 import com.hw.shopping.service.CustomUser;
 import com.hw.shopping.service.MemberService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -65,15 +69,42 @@ public class MemberController {
 
     @PostMapping("/login/jwt")
         @ResponseBody
-        public String loginJWT(@RequestBody Map<String, String> data) {
+        public String loginJWT(@RequestBody Map<String, String> data,
+        HttpServletResponse response
+            ) {
 
         var authToken = new UsernamePasswordAuthenticationToken(data.get("username"),
                                                                 data.get("password"));
-        authenticationManagerBuilder.getObject().authenticate(authToken);
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+        
+        Authentication auth = authenticationManagerBuilder.getObject()
+            .authenticate(authToken);
+        
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        String jwt = JwtUtil.createToken(SecurityContextHolder.getContext().getAuthentication());
+        System.out.println("Jwt = " + jwt);
+
+        Cookie cookie = new Cookie("jwt", jwt);
+        cookie.setMaxAge(1000);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
 
         return "";
     }
+
+    @GetMapping("/my-page/jwt")
+    @ResponseBody
+    String myPageJWT(Authentication auth) {
+
+        CustomUser user = (CustomUser) auth.getPrincipal();
+        System.out.println("user = " + user);
+        System.out.println("user.displayName = " + user.displayName);
+        System.out.println("user.getAuthorities() = " + user.getAuthorities());
+
+        return "";
+    }
+
 
 }
 
