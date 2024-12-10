@@ -53,17 +53,9 @@ public class OrdersController {
         model.addAttribute("order", orders);
 
         System.out.println("#################ORDER##################");
-        System.out.println("orders.get(0).getId() = " + orders.get(0).getId());
-        System.out.println("orders.get(0).getCount() = " + orders.get(0).getCount());
-        System.out.println("orders.get(0).getDisplayName() = " + orders.get(0).getMember().getDisplayName());
-        System.out.println("orders.get(0).getUsername() = " + orders.get(0).getMember().getUsername());
-        System.out.println("orders.get(0).getTitle() = " + orders.get(0).getItem().getTitle());
-        System.out.println("orders.get(0).getPrice() = " + orders.get(0).getPrice());
-
-
-
         System.out.println("@@@@@@@@@@Controller@@@@@@@@@@");
         System.out.println("@@@@@@@@@@Controller@@@@@@@@@@");
+
         return "orders/list.html";
     }
 

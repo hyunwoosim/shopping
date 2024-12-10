@@ -40,6 +40,12 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
 	// AWS S3 라이브러리
 	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3:3.1.1'
+
+	// JWT 라이브러리
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
+	implementation 'io.jsonwebtoken:jjwt-gson:0.12.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.12.5'
+
 }
 
 tasks.named('test') {
