@@ -35,3 +35,42 @@ CommentRepository
 ### 상황
 - jwt 필터를 만들고 쿠기와 유효기간을 확인하고 auth에 정보를 넣었는데 다른것 다 되는데 auth,authority에 정보가 들어가지 않는다
 - auth 가 null로 오류 발생중
+```
+java.lang.NullPointerException: Cannot invoke "org.springframework.security.core.Authentication.getPrincipal()" because "auth" is null
+	at com.hw.shopping.controller.MemberController.myPageJWT(MemberController.java:104) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.14.jar:6.1.14]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.14.jar:6.1.14]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.14.jar:6.1.14]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.14.jar:6.1.14]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.14.jar:6.1.14]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.14.jar:6.1.14]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.14.jar:6.1.14]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.14.jar:6.1.14]
+```
+
+### 원인
+```
+UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+            customUser, null
+        );
+```
+- authToken에 authorities를 같이 넘겨주지 않았기 때문이다.
+- UsernamePasswordAuthenticationToken 생성 시 authorities(사용자의 권한 정보)가 없는 경우
+- Spring Security가 인증된 사용자가 아니라고 간주하기 때문이다.
+- 그렇기 때문에 null 값으로 넘어가는 상황이 발생하는 것이다.
+
+### 해결
+```
+UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+            customUser, null, authorities
+        );
+```
+
+## UsernamePasswordAuthenticationToken 구성
+1. Principal: 사용자의 고유 식별 정보 (예: 사용자 객체). 
+2. Credentials: 인증 정보 (예: 비밀번호, 토큰). 
+3. Authorities: 사용자의 권한 정보 (GrantedAuthority의 리스트).

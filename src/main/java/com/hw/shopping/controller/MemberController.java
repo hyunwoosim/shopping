@@ -85,17 +85,21 @@ public class MemberController {
         System.out.println("Jwt = " + jwt);
 
         Cookie cookie = new Cookie("jwt", jwt);
-        cookie.setMaxAge(1000);
+        cookie.setMaxAge(30);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        return "";
+        return jwt;
     }
 
     @GetMapping("/my-page/jwt")
     @ResponseBody
     String myPageJWT(Authentication auth) {
+
+        System.out.println("########Contorller#########");
+        System.out.println("auth = " + auth);
+        System.out.println("########Contorller#########");
 
         CustomUser user = (CustomUser) auth.getPrincipal();
         System.out.println("user = " + user);

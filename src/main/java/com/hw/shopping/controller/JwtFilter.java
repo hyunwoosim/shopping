@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,43 +24,73 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
         FilterChain filterChain) throws ServletException, IOException {
 
-
         Cookie[] cookies = request.getCookies();
 
         if (cookies == null) {
             filterChain.doFilter(request, response);
-            return ;
+            return;
         }
 
-        String jwtCookies ="";
+        String jwtCookies = "";
         for (int i = 0; i < cookies.length; i++) {
+            System.out.println("####### cookie 이름 꺼내기 ########");
+            System.out.println("cookies = " + cookies[i].getName());
+            System.out.println("####### cookie 이름 꺼내기 ########");
+
             if (cookies[i].getName().equals("jwt")) {
-                 jwtCookies = cookies[i].getValue();
+
+                jwtCookies = cookies[i].getValue();
+
+                System.out.println("######JwtFiter#######");
+                System.out.println("jwtCookies = " + jwtCookies);
+                System.out.println("######JwtFiter#######");
             }
 
         }
-        System.out.println("jwtCookies = " + jwtCookies);
 
 
         Claims claim;
         try {
              claim = JwtUtil.extractToken(jwtCookies);
+            System.out.println("###########Claims###########");
+            System.out.println("claim = " + claim);
+            System.out.println("############Claims###########");
         } catch (Exception e) {
             System.out.println("유효기간 만료");
             filterChain.doFilter(request, response);
             return ;
         }
 
-        var arr = claim.get("authorities").toString().split(",");
-        var authorities = Arrays.stream(arr)
+        String[] arr = claim.get("authorities").toString().split(",");
+
+        System.out.println("###########arr1111###########");
+        System.out.println("arr = " + arr);
+        System.out.println("############arr1111###########");
+
+        List<SimpleGrantedAuthority> authorities = Arrays.stream(arr)
             .map(a -> new SimpleGrantedAuthority(a)).toList();
 
-        var customUser = new CustomUser( claim.get("username").toString(), "none", authorities);
+        System.out.println("###########authorities2222###########");
+        System.out.println("authorities = " + authorities);
+        System.out.println("############authorities2222###########");
+
+        CustomUser customUser = new CustomUser(claim.get("username").toString(), "none",
+                                               authorities);
+
+        System.out.println("###########customUser3333###########");
+        System.out.println("customUser = " + customUser);
+        System.out.println("authorities = " + authorities);
+        System.out.println("############customUser333###########");
+
         customUser.displayName = claim.get("displayName").toString();
 
-        var authToken = new UsernamePasswordAuthenticationToken(
+        System.out.println("########### customUser.displayName444444###########");
+        System.out.println(" customUser.displayName = " +  customUser.displayName);
+        System.out.println("############ customUser.displayName44444###########");
+
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
             customUser,
-            null
+                null, authorities
         );
         authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authToken);
@@ -67,4 +98,4 @@ public class JwtFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
-}
+    }
